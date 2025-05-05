@@ -84,4 +84,41 @@ public class BurgerTest {
         assertEquals("Цена отличается", expectedPrice, burger.getPrice(), 0.001f);
     }
 
+    @Test
+    public void runGetReceiptTest(){
+        Burger burger = new Burger();
+
+        when(bunM.getPrice()).thenReturn(50f);
+        when(bunM.getName()).thenReturn("Вкусна булка");
+
+        when(ingredient1.getType()).thenReturn(IngredientType.SAUCE);
+        when(ingredient1.getPrice()).thenReturn(50f);
+        when(ingredient1.getName()).thenReturn("Кепчук");
+
+        when(ingredient2.getType()).thenReturn(IngredientType.FILLING);
+        when(ingredient2.getPrice()).thenReturn(50f);
+        when(ingredient2.getName()).thenReturn("Катлеточка");
+
+        burger.setBuns(bunM);
+        burger.addIngredient(ingredient2);
+        burger.addIngredient(ingredient1);
+
+        String expected = String.format(
+                "(==== %s ====)%n" +
+                        "= %s %s =%n" +
+                        "= %s %s =%n" +
+                        "(==== %s ====)%n" +
+                        "%nPrice: %f%n",
+                "Вкусна булка",
+                "filling", "Катлеточка",
+                "sauce", "Кепчук",
+                "Вкусна булка",
+                200.0f
+        );
+
+        String actual = burger.getReceipt();
+
+        assertEquals("Рецепт не совпал", expected, actual);
+    }
+
 }
