@@ -46,4 +46,19 @@ public class BurgerTest {
         assertTrue("Ингредиент не убрался", burger.ingredients.isEmpty());
     }
 
+    @Test
+    public void runMoveIngredientTest(){
+        Ingredient first = new Ingredient(IngredientType.SAUCE, "hot sauce", 100);
+        Ingredient second = new Ingredient(IngredientType.SAUCE, "sour cream", 200);
+        Burger burger = new Burger();
+
+        burger.addIngredient(second);
+        burger.addIngredient(first);
+
+        burger.moveIngredient(0,1);
+
+        assertEquals("Ингредиент стоит не там","hot sauce", burger.ingredients.get(0).getName());
+        assertEquals("Ингредиент стоит не там","sour cream", burger.ingredients.get(1).getName());
+    }
+
 }
