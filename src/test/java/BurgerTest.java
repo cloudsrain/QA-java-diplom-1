@@ -12,7 +12,14 @@ import static org.mockito.Mockito.when;
 
 public class BurgerTest {
 
+    @Mock
+    Bun bunM;
 
+    @Mock
+    Ingredient ingredient1;
+
+    @Mock
+    Ingredient ingredient2;
 
     @Test
     public void runSetBunsTest() {
@@ -59,6 +66,22 @@ public class BurgerTest {
 
         assertEquals("Ингредиент стоит не там","hot sauce", burger.ingredients.get(0).getName());
         assertEquals("Ингредиент стоит не там","sour cream", burger.ingredients.get(1).getName());
+    }
+
+    @Test
+    public void runGetPriceTest(){
+        Burger burger = new Burger();
+
+        when(bunM.getPrice()).thenReturn(50f);
+        when(ingredient1.getPrice()).thenReturn(50f);
+        when(ingredient2.getPrice()).thenReturn(50f);
+
+        burger.setBuns(bunM);
+        burger.addIngredient(ingredient1);
+        burger.addIngredient(ingredient2);
+
+        float expectedPrice = bunM.getPrice() * 2 + ingredient1.getPrice() + ingredient2.getPrice();
+        assertEquals("Цена отличается", expectedPrice, burger.getPrice(), 0.001f);
     }
 
 }
