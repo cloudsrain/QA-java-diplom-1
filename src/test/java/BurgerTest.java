@@ -1,3 +1,4 @@
+import org.junit.Before;
 import praktikum.Bun;
 import praktikum.Ingredient;
 import praktikum.IngredientType;
@@ -13,8 +14,10 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class BurgerTest {
 
+    private Burger burger;
+
     @Mock
-    Bun bunM;
+    Bun bun;
 
     @Mock
     Ingredient ingredient1;
@@ -22,85 +25,72 @@ public class BurgerTest {
     @Mock
     Ingredient ingredient2;
 
+    @Before
+    public void setUp(){
+        burger = new Burger();
+
+        // Настройка булки
+        when(bun.getName()).thenReturn("Вкусна булка");
+        when(bun.getPrice()).thenReturn(50f);
+
+        // Настройка ингредиента 1
+        when(ingredient1.getType()).thenReturn(IngredientType.SAUCE);
+        when(ingredient1.getName()).thenReturn("Кепчук");
+        when(ingredient1.getPrice()).thenReturn(50f);
+
+        // Настройка ингредиента 2
+        when(ingredient2.getType()).thenReturn(IngredientType.FILLING);
+        when(ingredient2.getName()).thenReturn("Катлеточка");
+        when(ingredient2.getPrice()).thenReturn(50f);
+    }
+
     @Test
     public void runSetBunsTest() {
-        Bun bun = new Bun("black bun", 100);
-        Burger burger = new Burger();
-
         burger.setBuns(bun);
-
         assertEquals("Булка установлена некорректно", bun, burger.bun);
     }
 
     @Test
     public void runAddIngredientTest(){
-        Ingredient ingredient = new Ingredient(IngredientType.SAUCE, "hot sauce", 100);
-        Burger burger = new Burger();
+        burger.addIngredient(ingredient1);
 
-        burger.addIngredient(ingredient);
-
-        assertEquals("В списке больше одного ингредиента", 1, burger.ingredients.size());
-        assertEquals("В список добавился не тот ингредиент", ingredient, burger.ingredients.get(0));
+        assertEquals("Ожидалось ровно 1 ингредиент", 1, burger.ingredients.size());
     }
 
     @Test
     public void runRemoveIngredientTest(){
-        Ingredient ingredient = new Ingredient(IngredientType.SAUCE, "hot sauce", 100);
-        Burger burger = new Burger();
-
-        burger.addIngredient(ingredient);
-
+        burger.addIngredient(ingredient1);
         burger.removeIngredient(0);
-        assertTrue("Ингредиент не убрался", burger.ingredients.isEmpty());
+
+        assertTrue("Ингредиент не был удалён", burger.ingredients.isEmpty());
     }
 
     @Test
     public void runMoveIngredientTest(){
-        Ingredient first = new Ingredient(IngredientType.SAUCE, "hot sauce", 100);
-        Ingredient second = new Ingredient(IngredientType.SAUCE, "sour cream", 200);
-        Burger burger = new Burger();
+        burger.addIngredient(ingredient2);
+        burger.addIngredient(ingredient1);
+        burger.moveIngredient(0, 1);
 
-        burger.addIngredient(second);
-        burger.addIngredient(first);
-
-        burger.moveIngredient(0,1);
-
-        assertEquals("Ингредиент стоит не там","hot sauce", burger.ingredients.get(0).getName());
-        assertEquals("Ингредиент стоит не там","sour cream", burger.ingredients.get(1).getName());
+        assertEquals("Ингредиенты стоят в неправильном порядке", ingredient1, burger.ingredients.get(0));
     }
 
     @Test
     public void runGetPriceTest(){
-        Burger burger = new Burger();
+        burger = new Burger();
 
-        when(bunM.getPrice()).thenReturn(50f);
-        when(ingredient1.getPrice()).thenReturn(50f);
-        when(ingredient2.getPrice()).thenReturn(50f);
-
-        burger.setBuns(bunM);
+        burger.setBuns(bun);
         burger.addIngredient(ingredient1);
         burger.addIngredient(ingredient2);
 
-        float expectedPrice = bunM.getPrice() * 2 + ingredient1.getPrice() + ingredient2.getPrice();
+        float expectedPrice = bun.getPrice() * 2 + ingredient1.getPrice() + ingredient2.getPrice();
         assertEquals("Цена отличается", expectedPrice, burger.getPrice(), 0.001f);
     }
 
     @Test
     public void runGetReceiptTest(){
-        Burger burger = new Burger();
+        burger = new Burger();
 
-        when(bunM.getPrice()).thenReturn(50f);
-        when(bunM.getName()).thenReturn("Вкусна булка");
-
-        when(ingredient1.getType()).thenReturn(IngredientType.SAUCE);
-        when(ingredient1.getPrice()).thenReturn(50f);
-        when(ingredient1.getName()).thenReturn("Кепчук");
-
-        when(ingredient2.getType()).thenReturn(IngredientType.FILLING);
-        when(ingredient2.getPrice()).thenReturn(50f);
-        when(ingredient2.getName()).thenReturn("Катлеточка");
-
-        burger.setBuns(bunM);
+        burger.setBuns(bun);
         burger.addIngredient(ingredient2);
         burger.addIngredient(ingredient1);
 
