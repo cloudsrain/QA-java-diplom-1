@@ -38,8 +38,12 @@ public class BunTest {
     }
 
     @Test
-    public void runBunTest(){
+    public void runGetNameBunTest(){
         assertEquals("Ожидалось другое название булочки", name, actualName);
+    }
+
+    @Test
+    public void runGetPriceBunTest(){
         assertEquals("Ожидалось другая цена булочки", price, actualPrice, 0.001f);
     }
 
