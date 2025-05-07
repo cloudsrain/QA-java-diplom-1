@@ -49,7 +49,15 @@ public class IngredientTest {
     @Test
     public void runGetIngredientTypeTest(){
         assertEquals("Ожидался другой тип", type, actualType);
+    }
+
+    @Test
+    public void runGetIngredientNameTest(){
         assertEquals("Ожидался другое название", name, actualName);
+    }
+
+    @Test
+    public void runGetIngredientPriceTest(){
         assertEquals("Ожидалась другая цена", price, actualPrice, 0.001f);
     }
 
